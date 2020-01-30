@@ -47,6 +47,10 @@ def data(pkt):
     if pkt.type == 1: pktType = 'Control'
     if pkt.type == 2: pktType = 'Data'
 
+    #print(pkt[Dot11].addr1)
+    #print(pkt[Dot11].addr2)
+    #print(pkt[Dot11].addr3)
+    
     pktBSSID = pkt[Dot11].addr3
     pktSubtype = pkt.subtype
     pktTime = datetime.now().isoformat()
