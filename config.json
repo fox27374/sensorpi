@@ -3,9 +3,9 @@
         "Channels":[1,6,11]
     },
     "Splunk": {
-        "Server":"172.24.89.171",
+        "Server":"10.10.10.10",
         "Port": "8088",
         "URL": "/services/collector/",
-        "Token": "b6b02802-eaf6-4d17-89b1-0fd6d66d2673"
+        "Token": "aaaa2802-yyyy-XXXX-89b1-0fd6d66d2673"
     }
 }
