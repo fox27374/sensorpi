@@ -106,6 +106,8 @@ frameTypes = readConfig(frameTypesFile)
 iface = sensorPiConfig['SensorPi']['Interface']
 channels = sensorPiConfig['SensorPi']['Channels']
 scanTime = sensorPiConfig['SensorPi']['Scantime']
+wlansFile = sensorPiConfig['SensorPi']['wlansFile']
+frameTypesFile = sensorPiConfig['SensorPi']['frameTypesFile']
 # Splunk
 splunkServer = sensorPiConfig['Splunk']['Server']
 splunkPort = sensorPiConfig['Splunk']['Port']
@@ -123,8 +125,7 @@ print('Scanning for %s seconds to get all WLANs on channels %s'%(scanTime, chann
 loopTime = time.time() + scanTime
 #while time.time() < loopTime:
 
-#os.system("iwconfig " + iface + " channel " + str(channel))
-os.system("iwconfig " + iface + " channel " + str(1))
+os.system("iwconfig " + iface + " channel " + str(channel))
 while 1:
     #for channel in channels:
     #sniff(iface=iface, prn=beacon, count=10, timeout=3, store=0)

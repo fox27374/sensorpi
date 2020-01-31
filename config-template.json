@@ -1,8 +1,10 @@
 {
     "SensorPi": {
-	"Interface":"wlan0",
-        "Channels":[1,6,11],
-        "Scantime":"10"
+	"Interface": "wlan0",
+        "Channels": [1,6,11],
+        "Scantime": "10",
+	"wlansFile": "wlans.json",
+	"frameTypesFile": "frametypes.json"
     },
     "Splunk": {
         "Server":"10.10.10.10",
