@@ -7,22 +7,6 @@ import requests
 from datetime import datetime
 from scapy.all import *
 
-# Configuration
-scanTime = 10
-
-# Variables
-wlans = {}
-pkts = []
-
-if len(sys.argv) ==  2:
-    iface = str(sys.argv[1])
-else:
-    iface = "wlan0"
-
-os.system("ifconfig " + iface + " down") 
-os.system("iwconfig " + iface + " mode monitor")
-os.system("ifconfig " + iface + " up")
-
 
 def readConfig(configFile):
     with open(configFile, 'r') as cf:
@@ -40,20 +24,26 @@ def beacon(pkt):
         createWlanList(wlan)
 
 def data(pkt):
-    pktRetry = '0'
-    if 'retry' in pkt.FCfield:
-        pktRetry = '1'
-    if pkt.type == 0: pktType = 'Management'
-    if pkt.type == 1: pktType = 'Control'
-    if pkt.type == 2: pktType = 'Data'
+    global frameTypes
+    pktRetry = False
+    pktToDS = False
+    pktFromDS = False
 
-    #print(pkt[Dot11].addr1)
-    #print(pkt[Dot11].addr2)
-    #print(pkt[Dot11].addr3)
-    
     pktBSSID = pkt[Dot11].addr3
-    pktSubtype = pkt.subtype
+    pktRetry = pkt[Dot11].FCfield.retry != 0
+    pktType = frameTypes[str(pkt.type)]['Name']
+    pktSubtype = frameTypes[str(pkt.type)][str(pkt.subtype)]
     pktTime = datetime.now().isoformat()
+
+
+    # Get ToDS and FromDS flags if packet is of type data
+    # and read BSSID from a different address field
+    if pkt.type == 2:
+        pktToDS = pkt.FCfield & 0x4 != 0
+        pktFromDS = pkt.FCfield & 0x5 != 0
+        if pktToDS: pktBSSID = pkt[Dot11].addr1
+        if pktFromDS: pktBSSID = pkt[Dot11].addr2
+
     #pktChannel = int(ord(pkt[Dot11Elt:3].info))
     pktChannel = pkt[RadioTap].Channel
     if pktType == 0:
@@ -62,19 +52,14 @@ def data(pkt):
     else:
         pktSSID = 'NA'
 
-    pktInfo = {"event":{"time":str(pktTime), "type":pktType, "subtype":pktSubtype, "ssid":pktSSID, "bssid":pktBSSID, "channel":pktChannel, "flags":{"retry":pktRetry}}}
-
-    #print(pktTime)
+    pktInfo = {"event":{"time":str(pktTime), "type":pktType, "subtype":pktSubtype, "tods":pktToDS, "fromds":pktFromDS, "ssid":pktSSID, "bssid":pktBSSID, "channel":pktChannel, "retry":pktRetry}}
     aggregateData(pktInfo)
-    #print(json.dumps(pktInfo, indent=4))
-    #sendData('172.24.89.171', 'b6b02802-eaf6-4d17-89b1-0fd6d66d2673', pktInfo)
 
 
 def aggregateData(pktInfo):
     global pkts
     if len(pkts) <= 100:
         pkts.append(pktInfo)
-        #print(pkts)
     else:
         sendData(pkts)
         pkts = []
@@ -108,13 +93,25 @@ def createWlanList(wlan):
 
 # Configuration
 sensorPiConfig = readConfig('config.json')
+frameTypes = readConfig('frametypes.json')
+iface = sensorPiConfig['SensorPi']['Interface']
 channels = sensorPiConfig['SensorPi']['Channels']
+scanTime = sensorPiConfig['SensorPi']['Scantime']
 splunkServer = sensorPiConfig['Splunk']['Server']
 splunkPort = sensorPiConfig['Splunk']['Port']
 splunkURL = sensorPiConfig['Splunk']['URL']
 splunkToken = sensorPiConfig['Splunk']['Token']
 
+# Variables
+wlans = {}
+pkts = []
 
+# Main routine
+os.system("ifconfig " + iface + " down") 
+os.system("iwconfig " + iface + " mode monitor")
+os.system("ifconfig " + iface + " up") 
+            
+            
 print('Scanning for %s seconds to get all WLANs on channels %s'%(scanTime, channels))
 loopTime = time.time() + scanTime
 #while time.time() < loopTime:
@@ -126,5 +123,3 @@ while 1:
     #sniff(iface=iface, prn=beacon, count=10, timeout=3, store=0)
     sniff(iface=iface, prn=data, count=10, timeout=3, store=0)
 
-#sendData(json.dumps(wlans))
-#print(json.dumps(wlans, indent=4))
