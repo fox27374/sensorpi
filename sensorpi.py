@@ -13,6 +13,10 @@ def readConfig(configFile):
         configDict = json.load(cf)
     return configDict
 
+def changeIfaceMode(iface):
+    os.system("ifconfig " + iface + " down") 
+    os.system("iwconfig " + iface + " mode monitor")
+    os.system("ifconfig " + iface + " up") 
 
 def beacon(pkt):
     if pkt.haslayer(Dot11Beacon):
@@ -91,12 +95,18 @@ def createWlanList(wlan):
         valueList.append(wlanValue)
         wlans[ssid] = valueList
 
-# Configuration
-sensorPiConfig = readConfig('config.json')
-frameTypes = readConfig('frametypes.json')
+# Load Configuration
+configFile = 'config.json'
+frameTypesFile = 'frametypes.json'
+
+sensorPiConfig = readConfig(configFile)
+frameTypes = readConfig(frameTypesFile)
+
+# SensorPi
 iface = sensorPiConfig['SensorPi']['Interface']
 channels = sensorPiConfig['SensorPi']['Channels']
 scanTime = sensorPiConfig['SensorPi']['Scantime']
+# Splunk
 splunkServer = sensorPiConfig['Splunk']['Server']
 splunkPort = sensorPiConfig['Splunk']['Port']
 splunkURL = sensorPiConfig['Splunk']['URL']
@@ -106,11 +116,8 @@ splunkToken = sensorPiConfig['Splunk']['Token']
 wlans = {}
 pkts = []
 
-# Main routine
-os.system("ifconfig " + iface + " down") 
-os.system("iwconfig " + iface + " mode monitor")
-os.system("ifconfig " + iface + " up") 
-            
+# System preparation
+changeIfaceMode(iface)            
             
 print('Scanning for %s seconds to get all WLANs on channels %s'%(scanTime, channels))
 loopTime = time.time() + scanTime
