@@ -3,6 +3,7 @@
 	"Interface": "wlan0",
         "Channels": [1,6,11],
         "Scantime": "10",
+        "Channeltime": "5",
 	"wlansFile": "wlans.json",
 	"frameTypesFile": "frametypes.json"
     },
@@ -10,6 +11,7 @@
         "Server":"10.10.10.10",
         "Port": "8088",
         "URL": "/services/collector",
-        "Token": "aaaa2802-xxxx-4d17-yyyy-0fd6d66drrrr"
+        "Token": "aaaa2802-xxxx-4d17-yyyy-0fd6d66drrrr",
+        "Bulk": "20"
     }
 }
