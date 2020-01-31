@@ -6,17 +6,8 @@ import json
 import requests
 from datetime import datetime
 from scapy.all import *
+from spmodule import *
 
-
-def readConfig(configFile):
-    with open(configFile, 'r') as cf:
-        configDict = json.load(cf)
-    return configDict
-
-def changeIfaceMode(iface):
-    os.system("ifconfig " + iface + " down") 
-    os.system("iwconfig " + iface + " mode monitor")
-    os.system("ifconfig " + iface + " up") 
 
 def data(pkt):
     global frameTypes
@@ -49,22 +40,7 @@ def data(pkt):
             pktSSID = 'NA'
 
         pktInfo = {"event":{"time":str(pktTime), "type":pktType, "subtype":pktSubtype, "tods":pktToDS, "fromds":pktFromDS, "ssid":pktSSID, "bssid":pktBSSID, "channel":pktChannel, "retry":pktRetry}}
-        aggregateData(pktInfo)
-
-
-def aggregateData(pktInfo):
-    global pkts
-    if len(pkts) <= int(splunkBulk):
-        pkts.append(pktInfo)
-    else:
-        sendData(pkts)
-        pkts = []
-        pkts.append(pktInfo)
-
-def sendData(pkts):
-    url = 'https://' + splunkServer + ':' + splunkPort + splunkURL
-    authHeader = {'Authorization': 'Splunk %s'%splunkToken}
-    req = requests.post(url, headers=authHeader, json=pkts, verify=False)
+        aggregateData(pktInfo, pkts, splunkServer, splunkPort, splunkURL, splunkToken, splunkBulk)
 
 
 # Load Configuration
