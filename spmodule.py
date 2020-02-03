@@ -16,18 +16,11 @@ def changeIfaceMode(iface):
     os.system("iwconfig " + iface + " mode monitor")
     os.system("ifconfig " + iface + " up")
 
-def aggregateData(pktInfo, pkts, splunkServer, splunkPort, splunkURL, splunkToken, splunkBulk):
-    if len(pkts) <= int(splunkBulk):
-        pkts.append(pktInfo)
-    else:
-        sendData(pkts, splunkServer, splunkPort, splunkURL, splunkToken)
-        pkts = []
-        pkts.append(pktInfo)
-
 def sendData(pkts, splunkServer, splunkPort, splunkURL, splunkToken):
     url = 'https://' + splunkServer + ':' + splunkPort + splunkURL
     authHeader = {'Authorization': 'Splunk %s'%splunkToken}
     req = requests.post(url, headers=authHeader, json=pkts, verify=False)
+    print(req)
 
 def createWlanList(wlan, wlans):
     ssid = wlan['ssid']
@@ -54,3 +47,8 @@ def writeWlanList(wlansFile, wlans):
     f.write(json.dumps(wlans, indent=4))
     f.close()
 
+
+### HTTP Server section
+
+def createConfigTable(config):
+    return 0

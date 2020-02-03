@@ -4,14 +4,15 @@ import os
 import time
 import json
 import requests
-from datetime import datetime
 from scapy.all import *
+import threading
 from spmodule import *
 
 
 def data(pkt):
     global frameTypes
     global scanWLANBSSIDs
+    global pkts
     pktRetry = False
     pktToDS = False
     pktFromDS = False
@@ -29,7 +30,7 @@ def data(pkt):
         pktRetry = pkt[Dot11].FCfield.retry != 0
         pktType = frameTypes[str(pkt.type)]['Name']
         pktSubtype = frameTypes[str(pkt.type)][str(pkt.subtype)]
-        pktTime = datetime.now().isoformat()
+        pktTime = time.time() #Epoch time for Splunk HEC
 
         #pktChannel = int(ord(pkt[Dot11Elt:3].info))
         pktChannel = pkt[RadioTap].Channel
@@ -39,9 +40,15 @@ def data(pkt):
         else:
             pktSSID = 'NA'
 
-        pktInfo = {"event":{"time":str(pktTime), "type":pktType, "subtype":pktSubtype, "tods":pktToDS, "fromds":pktFromDS, "ssid":pktSSID, "bssid":pktBSSID, "channel":pktChannel, "retry":pktRetry}}
-        aggregateData(pktInfo, pkts, splunkServer, splunkPort, splunkURL, splunkToken, splunkBulk)
-
+        pktInfo = {"time":pktTime, "event":{"type":pktType, "subtype":pktSubtype, "tods":pktToDS, "fromds":pktFromDS, "ssid":pktSSID, "bssid":pktBSSID, "channel":pktChannel, "retry":pktRetry}}
+        
+        if len(pkts) <= int(splunkBulk):
+            pkts.append(pktInfo)
+        else:
+            sendThread = threading.Thread(target=sendData, args=(pkts, splunkServer, splunkPort, splunkURL, splunkToken))
+            sendThread.start()
+            pkts = []
+            pkts.append(pktInfo)
 
 # Load Configuration
 configFile = 'config.json'
