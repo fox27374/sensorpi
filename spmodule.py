@@ -5,6 +5,15 @@ import os
 import time
 import requests
 from scapy.all import *
+import logging
+
+# set up logging
+logging.basicConfig(level=logging.DEBUG,
+                    format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
+                    datefmt='%m-%d %H:%M',
+                    filename='app.log',
+                    filemode='w')
+logging.getLogger("urllib3").setLevel(logging.WARNING)
 
 def readConfig(configFile):
     with open(configFile, 'r') as cf:
@@ -13,19 +22,27 @@ def readConfig(configFile):
 
 def changeIfaceMode(iface):
     os.system("ifconfig " + iface + " down")
+    logging.info('Shutting down interface %s'%iface)
     os.system("iwconfig " + iface + " mode monitor")
+    logging.info('Setting interface %s to monitore mode'%iface)
     os.system("ifconfig " + iface + " up")
+    logging.info('Bringing up interface %s'%iface)
 
 def sendData(pkts, splunkServer, splunkPort, splunkURL, splunkToken):
     url = 'https://' + splunkServer + ':' + splunkPort + splunkURL
     authHeader = {'Authorization': 'Splunk %s'%splunkToken}
+    logging.info('Sending data to Splunk server')
     req = requests.post(url, headers=authHeader, json=pkts, verify=False)
-    print(req)
+    logging.info('Reply: %s'%req)
 
 def createWlanList(wlan, wlans):
+    frequencies = readConfig('frequencies.json')
     ssid = wlan['ssid']
     bssid = wlan['bssid']
-    wlanValue = {'bssid':bssid, 'channel':wlan['channel']}
+    channel = frequencies['fre2cha'][wlan['channel']]
+    #rssi = wlan['rssi']
+    #wlanValue = {'bssid':bssid, 'channel':wlan['channel'], 'rssi':rssi}
+    wlanValue = {'bssid':bssid, 'channel':channel}
     addValue = True
     
     # Append values if SSID exists (no duplicates)
@@ -46,9 +63,5 @@ def writeWlanList(wlansFile, wlans):
     f = open(wlansFile, 'w')
     f.write(json.dumps(wlans, indent=4))
     f.close()
+    logging.info('Writing WLANs to %s'%wlansFile)
 
-
-### HTTP Server section
-
-def createConfigTable(config):
-    return 0

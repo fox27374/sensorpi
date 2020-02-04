@@ -1,0 +1,68 @@
+02-04 17:54 root         INFO     Reading config file config.json
+02-04 17:54 root         INFO     Starting SensorPi with this configuration:
+02-04 17:54 root         INFO     {'SensorPi': {'Interface': 'wlan0', 'Channels': [1, 6, 11], 'Scantime': '10', 'Channeltime': '5', 'wlansFile': 'wlans.json', 'frameTypesFile': 'frametypes.json', 'httpServerIP': '172.24.80.24', 'httpServerPort': '8080'}, 'Splunk': {'Server': '172.24.89.171', 'Port': '8088', 'URL': '/services/collector', 'Token': 'b6b02802-eaf6-4d17-89b1-0fd6d66d2673', 'Bulk': '20'}}
+02-04 17:54 root         INFO     Shutting down interface wlan0
+02-04 17:54 root         INFO     Setting interface wlan0 to monitore mode
+02-04 17:54 root         INFO     Bringing up interface wlan0
+02-04 17:54 root         INFO     Start scanning on channels ['1', '6', '36', '6', '11'] for WLAN Aironet-NTS-Secure
+02-04 17:54 root         INFO     Scanning every channel for 5 seconds
+02-04 17:54 root         INFO     Sending data to Splunk in bulks of 20
+02-04 17:54 root         INFO     Setting interface to channel 1
+02-04 17:55 root         INFO     Setting interface to channel 6
+02-04 17:55 root         INFO     Setting interface to channel 36
+02-04 17:55 root         INFO     Setting interface to channel 6
+02-04 17:55 root         INFO     Sending data to Splunk server
+02-04 17:55 root         INFO     Reply: <Response [200]>
+02-04 17:55 root         INFO     Setting interface to channel 11
+02-04 17:55 root         INFO     Setting interface to channel 1
+02-04 17:55 root         INFO     Sending data to Splunk server
+02-04 17:55 root         INFO     Setting interface to channel 6
+02-04 17:55 root         INFO     Reply: <Response [200]>
+02-04 17:55 root         INFO     Setting interface to channel 36
+02-04 17:55 root         INFO     Setting interface to channel 6
+02-04 17:55 root         INFO     Sending data to Splunk server
+02-04 17:55 root         INFO     Setting interface to channel 11
+02-04 17:55 root         INFO     Reply: <Response [200]>
+02-04 17:55 root         INFO     Setting interface to channel 1
+02-04 17:56 root         INFO     Setting interface to channel 6
+02-04 17:56 root         INFO     Sending data to Splunk server
+02-04 17:56 root         INFO     Setting interface to channel 36
+02-04 17:56 root         INFO     Reply: <Response [200]>
+02-04 17:56 root         INFO     Setting interface to channel 6
+02-04 17:56 root         INFO     Setting interface to channel 11
+02-04 17:56 root         INFO     Sending data to Splunk server
+02-04 17:56 root         INFO     Setting interface to channel 1
+02-04 17:56 root         INFO     Reply: <Response [200]>
+02-04 17:56 root         INFO     Setting interface to channel 6
+02-04 17:56 root         INFO     Setting interface to channel 36
+02-04 17:56 root         INFO     Sending data to Splunk server
+02-04 17:56 root         INFO     Setting interface to channel 6
+02-04 17:57 root         INFO     Reply: <Response [200]>
+02-04 17:57 root         INFO     Setting interface to channel 11
+02-04 17:57 root         INFO     Setting interface to channel 1
+02-04 17:57 root         INFO     Setting interface to channel 6
+02-04 17:57 root         INFO     Sending data to Splunk server
+02-04 17:57 root         INFO     Setting interface to channel 36
+02-04 17:57 root         INFO     Reply: <Response [200]>
+02-04 17:57 root         INFO     Setting interface to channel 6
+02-04 17:57 root         INFO     Setting interface to channel 11
+02-04 17:57 root         INFO     Setting interface to channel 1
+02-04 17:57 root         INFO     Sending data to Splunk server
+02-04 17:58 root         INFO     Reply: <Response [200]>
+02-04 17:58 root         INFO     Setting interface to channel 6
+02-04 17:58 root         INFO     Setting interface to channel 36
+02-04 17:58 root         INFO     Setting interface to channel 6
+02-04 17:58 root         INFO     Sending data to Splunk server
+02-04 17:58 root         INFO     Setting interface to channel 11
+02-04 17:58 root         INFO     Reply: <Response [200]>
+02-04 17:58 root         INFO     Setting interface to channel 1
+02-04 17:58 root         INFO     Setting interface to channel 6
+02-04 17:58 root         INFO     Setting interface to channel 36
+02-04 17:58 root         INFO     Sending data to Splunk server
+02-04 17:59 root         INFO     Setting interface to channel 6
+02-04 17:59 root         INFO     Reply: <Response [200]>
+02-04 17:59 root         INFO     Setting interface to channel 11
+02-04 17:59 root         INFO     Setting interface to channel 1
+02-04 17:59 root         INFO     Setting interface to channel 6
+02-04 17:59 root         INFO     Setting interface to channel 36
+02-04 17:59 root         INFO     Sending data to Splunk server

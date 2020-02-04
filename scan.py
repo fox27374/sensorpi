@@ -12,7 +12,13 @@ def beacon(pkt):
         bssid = pkt[Dot11].addr3    
         #channel = int(ord(pkt[Dot11Elt:3].info))
         channel = pkt[RadioTap].Channel
-        wlan = {'ssid':ssid.decode('UTF-8'), 'bssid':bssid, 'channel':channel}
+        #try:
+        #    extra = pkt[RadioTap].notdecoded
+        #    rssi = -(256-ord(extra[-4:-3]))
+        #except:
+        #    rssi = -100
+        #wlan = {'ssid':ssid.decode('UTF-8'), 'bssid':bssid, 'channel':channel, 'rssi':rssi}
+        wlan = {'ssid':ssid.decode('UTF-8'), 'bssid':bssid, 'channel':str(channel)}
         createWlanList(wlan, wlans)
 
 # Load Configuration
@@ -32,7 +38,7 @@ channels= [1,6,11,36,40,44,48]
 # System preparation
 changeIfaceMode(iface)            
             
-print('Scanning for %s seconds to get all WLANs on channels %s'%(scanTime, channels))
+logging.info('Scanning for %s seconds to get all WLANs on channels %s'%(scanTime, channels))
 loopTime = time.time() + int(scanTime)
 while time.time() < loopTime:
     for channel in channels:

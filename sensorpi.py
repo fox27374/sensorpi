@@ -7,7 +7,8 @@ import requests
 from scapy.all import *
 import threading
 from spmodule import *
-
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 def data(pkt):
     global frameTypes
@@ -41,7 +42,6 @@ def data(pkt):
             pktSSID = 'NA'
 
         pktInfo = {"time":pktTime, "event":{"type":pktType, "subtype":pktSubtype, "tods":pktToDS, "fromds":pktFromDS, "ssid":pktSSID, "bssid":pktBSSID, "channel":pktChannel, "retry":pktRetry}}
-        
         if len(pkts) <= int(splunkBulk):
             pkts.append(pktInfo)
         else:
@@ -56,6 +56,10 @@ frameTypesFile = 'frametypes.json'
 
 sensorPiConfig = readConfig(configFile)
 frameTypes = readConfig(frameTypesFile)
+
+logging.info('Reading config file %s'%configFile)
+logging.info('Starting SensorPi with this configuration:')
+logging.info(sensorPiConfig)
 
 # SensorPi
 iface = sensorPiConfig['SensorPi']['Interface']
@@ -81,7 +85,6 @@ wlans = readConfig(wlansFile)
 # Check if requested WLAN is stored already
 if scanWLAN in wlans.keys():
     # System preparation
-    print('Setting interface %s to monitor mode' %iface)
     changeIfaceMode(iface)            
     scanWLANBSSIDs = []
     scanWLANChannels = []
@@ -89,17 +92,18 @@ if scanWLAN in wlans.keys():
         scanWLANBSSIDs.append(wlanInfo['bssid'])
         scanWLANChannels.append(wlanInfo['channel'])
 
-    print('Start scanning on channels ' + str(scanWLANChannels) + ' for WLAN ' + scanWLAN)
-    print('Scanning every channel for ' + channelTime + ' seconds')
-    print('Sending data to Splunk in bulks of %s' %splunkBulk)
+    logging.info('Start scanning on channels ' + str(scanWLANChannels) + ' for WLAN ' + scanWLAN)
+    logging.info('Scanning every channel for ' + channelTime + ' seconds')
+    logging.info('Sending data to Splunk in bulks of %s' %splunkBulk)
 
     while 1:
         for scanWLANChannel in scanWLANChannels:
+            logging.info('Setting interface to channel %s'%scanWLANChannel)
             os.system("iwconfig " + iface + " channel " + str(scanWLANChannel))
             loopTime = time.time() + int(channelTime)
             while time.time() < loopTime:
                 sniff(iface=iface, prn=data, count=10, timeout=3, store=0)
 
 else:
-    print('WLAN %s not found in list, please scan first.' %scanWLAN)
+    logging.error('WLAN %s not found in list, please scan first.' %scanWLAN)
 
