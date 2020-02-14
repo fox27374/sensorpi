@@ -4,6 +4,7 @@ import os
 import time
 import json
 import requests
+import signal
 import globalVars as gv
 from scapy.all import *
 import threading
@@ -30,13 +31,16 @@ if scanWLAN in wlans.keys():
     logging.info('Scanning every channel for ' + gv.channelTime + ' seconds')
     logging.info('Sending data to Splunk in bulks of %s' %gv.splunkBulk)
 
-    while 1:
-        for scanWLANChannel in scanWLANChannels:
-            logging.info('Setting interface to channel %s'%scanWLANChannel)
-            os.system("iwconfig " + gv.iface + " channel " + str(scanWLANChannel))
-            loopTime = time.time() + int(gv.channelTime)
-            while time.time() < loopTime:
-                sniff(iface=gv.iface, prn=data, count=10, timeout=3, store=0)
+    try:    
+        while 1:
+            for scanWLANChannel in scanWLANChannels:
+                logging.info('Setting interface to channel %s'%scanWLANChannel)
+                os.system("iwconfig " + gv.iface + " channel " + str(scanWLANChannel))
+                loopTime = time.time() + int(gv.channelTime)
+                while time.time() < loopTime:
+                    sniff(iface=gv.iface, prn=data, count=10, timeout=3, store=0)
+    except KeyboardInterrupt:
+        print("W: interrupt received, stopping")
 
 else:
     logging.error('WLAN %s not found in list, please scan first.' %scanWLAN)
