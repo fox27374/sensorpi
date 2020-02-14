@@ -4,6 +4,7 @@ import json
 import os
 import time
 import requests
+import globalVars as gv
 from scapy.all import *
 import logging
 
@@ -17,9 +18,6 @@ logging.getLogger("urllib3").setLevel(logging.WARNING)
 
 # PKT Filter
 def data(pkt):
-    global frameTypes
-    global scanWLANBSSIDs
-    global pkts
     pktRetry = False
     pktToDS = False
     pktFromDS = False
@@ -33,10 +31,10 @@ def data(pkt):
         if pktFromDS: pktBSSID = pkt[Dot11].addr2
     # Check if BSSID is in one of the addres fields
     # otherwise the frame is not interresting
-    if pktBSSID in scanWLANBSSIDs:
+    if pktBSSID in gv.scanWLANBSSIDs:
         pktRetry = pkt[Dot11].FCfield.retry != 0
-        pktType = frameTypes[str(pkt.type)]['Name']
-        pktSubtype = frameTypes[str(pkt.type)][str(pkt.subtype)]
+        pktType = gv.frameTypes[str(pkt.type)]['Name']
+        pktSubtype = gv.frameTypes[str(pkt.type)][str(pkt.subtype)]
         pktTime = time.time() #Epoch time for Splunk HEC
 
         #pktChannel = int(ord(pkt[Dot11Elt:3].info))
@@ -48,13 +46,13 @@ def data(pkt):
             pktSSID = 'NA'
 
         pktInfo = {"time":pktTime, "event":{"type":pktType, "subtype":pktSubtype, "tods":pktToDS, "fromds":pktFromDS, "ssid":pktSSID, "bssid":pktBSSID, "channel":pktChannel, "retry":pktRetry}}
-        if len(pkts) <= int(splunkBulk):
-            pkts.append(pktInfo)
+        if len(gv.pkts) <= int(gv.splunkBulk):
+            gv.pkts.append(pktInfo)
         else:
-            sendThread = threading.Thread(target=sendData, args=(pkts, splunkServer, splunkPort, splunkURL, splunkToken))
+            sendThread = threading.Thread(target=sendData, args=(gv.pkts, gv.splunkServer, gv.splunkPort, gv.splunkURL, gv.splunkToken))
             sendThread.start()
-            pkts = []
-            pkts.append(pktInfo)
+            gv.pkts = []
+            gv.pkts.append(pktInfo)
 
 
 def beacon(pkt):
