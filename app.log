@@ -1,216 +1,162 @@
-02-14 16:21 root         INFO     Reading config file config.json
-02-14 16:21 root         INFO     Starting SensorPi with this configuration:
-02-14 16:21 root         INFO     {'SensorPi': {'Interface': 'wlan1', 'Channels': [1, 6, 11], 'Scantime': '10', 'Channeltime': '5', 'wlansFile': 'wlans.json', 'frameTypesFile': 'frametypes.json'}, 'Splunk': {'Server': '172.24.89.171', 'Port': '8088', 'URL': '/services/collector', 'Token': 'b6b02802-eaf6-4d17-89b1-0fd6d66d2673', 'Bulk': '20'}}
-02-14 16:21 root         INFO     Shutting down interface wlan1
-02-14 16:21 root         INFO     Setting interface wlan1 to monitore mode
-02-14 16:21 root         INFO     Bringing up interface wlan1
-02-14 16:21 root         INFO     Start scanning on channels ['6', '11', '1', '11', '11'] for WLAN Aironet-NTS-Secure
-02-14 16:21 root         INFO     Scanning every channel for 5 seconds
-02-14 16:21 root         INFO     Sending data to Splunk in bulks of 20
-02-14 16:21 root         INFO     Setting interface to channel 6
-02-14 16:21 root         INFO     Sending data to Splunk server
-02-14 16:21 root         INFO     Reply: <Response [200]>
-02-14 16:21 root         INFO     Setting interface to channel 11
-02-14 16:21 root         INFO     Sending data to Splunk server
-02-14 16:21 root         INFO     Reply: <Response [200]>
-02-14 16:21 root         INFO     Setting interface to channel 1
-02-14 16:21 root         INFO     Setting interface to channel 11
-02-14 16:21 root         INFO     Sending data to Splunk server
-02-14 16:21 root         INFO     Reply: <Response [200]>
-02-14 16:21 root         INFO     Setting interface to channel 11
-02-14 16:21 root         INFO     Sending data to Splunk server
-02-14 16:21 root         INFO     Reply: <Response [200]>
-02-14 16:21 root         INFO     Setting interface to channel 6
-02-14 16:21 root         INFO     Sending data to Splunk server
-02-14 16:21 root         INFO     Reply: <Response [200]>
-02-14 16:22 root         INFO     Setting interface to channel 11
-02-14 16:22 root         INFO     Sending data to Splunk server
-02-14 16:22 root         INFO     Reply: <Response [200]>
-02-14 16:22 root         INFO     Sending data to Splunk server
-02-14 16:22 root         INFO     Reply: <Response [200]>
-02-14 16:22 root         INFO     Setting interface to channel 1
-02-14 16:22 root         INFO     Setting interface to channel 11
-02-14 16:22 root         INFO     Sending data to Splunk server
-02-14 16:22 root         INFO     Reply: <Response [200]>
-02-14 16:22 root         INFO     Setting interface to channel 11
-02-14 16:22 root         INFO     Sending data to Splunk server
-02-14 16:22 root         INFO     Reply: <Response [200]>
-02-14 16:22 root         INFO     Setting interface to channel 6
-02-14 16:22 root         INFO     Sending data to Splunk server
-02-14 16:22 root         INFO     Reply: <Response [200]>
-02-14 16:22 root         INFO     Sending data to Splunk server
-02-14 16:22 root         INFO     Reply: <Response [200]>
-02-14 16:22 root         INFO     Setting interface to channel 11
-02-14 16:22 root         INFO     Sending data to Splunk server
-02-14 16:22 root         INFO     Reply: <Response [200]>
-02-14 16:22 root         INFO     Setting interface to channel 1
-02-14 16:22 root         INFO     Setting interface to channel 11
-02-14 16:22 root         INFO     Sending data to Splunk server
-02-14 16:22 root         INFO     Reply: <Response [200]>
-02-14 16:22 root         INFO     Sending data to Splunk server
-02-14 16:22 root         INFO     Reply: <Response [200]>
-02-14 16:22 root         INFO     Setting interface to channel 11
-02-14 16:22 root         INFO     Sending data to Splunk server
-02-14 16:22 root         INFO     Reply: <Response [200]>
-02-14 16:22 root         INFO     Setting interface to channel 6
-02-14 16:22 root         INFO     Sending data to Splunk server
-02-14 16:22 root         INFO     Reply: <Response [200]>
-02-14 16:22 root         INFO     Setting interface to channel 11
-02-14 16:22 root         INFO     Sending data to Splunk server
-02-14 16:22 root         INFO     Reply: <Response [200]>
-02-14 16:22 root         INFO     Setting interface to channel 1
-02-14 16:23 root         INFO     Sending data to Splunk server
-02-14 16:23 root         INFO     Reply: <Response [200]>
-02-14 16:23 root         INFO     Setting interface to channel 11
-02-14 16:23 root         INFO     Sending data to Splunk server
-02-14 16:23 root         INFO     Reply: <Response [200]>
-02-14 16:23 root         INFO     Setting interface to channel 11
-02-14 16:23 root         INFO     Sending data to Splunk server
-02-14 16:23 root         INFO     Reply: <Response [200]>
-02-14 16:23 root         INFO     Sending data to Splunk server
-02-14 16:23 root         INFO     Reply: <Response [200]>
-02-14 16:23 root         INFO     Setting interface to channel 6
-02-14 16:23 root         INFO     Setting interface to channel 11
-02-14 16:23 root         INFO     Sending data to Splunk server
-02-14 16:23 root         INFO     Reply: <Response [200]>
-02-14 16:23 root         INFO     Setting interface to channel 1
-02-14 16:23 root         INFO     Sending data to Splunk server
-02-14 16:23 root         INFO     Reply: <Response [200]>
-02-14 16:23 root         INFO     Setting interface to channel 11
-02-14 16:23 root         INFO     Sending data to Splunk server
-02-14 16:23 root         INFO     Reply: <Response [200]>
-02-14 16:23 root         INFO     Setting interface to channel 11
-02-14 16:23 root         INFO     Sending data to Splunk server
-02-14 16:23 root         INFO     Reply: <Response [200]>
-02-14 16:23 root         INFO     Setting interface to channel 6
-02-14 16:23 root         INFO     Sending data to Splunk server
-02-14 16:23 root         INFO     Reply: <Response [200]>
-02-14 16:23 root         INFO     Setting interface to channel 11
-02-14 16:23 root         INFO     Sending data to Splunk server
-02-14 16:23 root         INFO     Reply: <Response [200]>
-02-14 16:23 root         INFO     Sending data to Splunk server
-02-14 16:23 root         INFO     Reply: <Response [200]>
-02-14 16:23 root         INFO     Setting interface to channel 1
-02-14 16:23 root         INFO     Setting interface to channel 11
-02-14 16:23 root         INFO     Sending data to Splunk server
-02-14 16:23 root         INFO     Reply: <Response [200]>
-02-14 16:24 root         INFO     Setting interface to channel 11
-02-14 16:24 root         INFO     Sending data to Splunk server
-02-14 16:24 root         INFO     Reply: <Response [200]>
-02-14 16:24 root         INFO     Sending data to Splunk server
-02-14 16:24 root         INFO     Reply: <Response [200]>
-02-14 16:24 root         INFO     Setting interface to channel 6
-02-14 16:24 root         INFO     Sending data to Splunk server
-02-14 16:24 root         INFO     Reply: <Response [200]>
-02-14 16:24 root         INFO     Setting interface to channel 11
-02-14 16:24 root         INFO     Sending data to Splunk server
-02-14 16:24 root         INFO     Reply: <Response [200]>
-02-14 16:24 root         INFO     Setting interface to channel 1
-02-14 16:24 root         INFO     Sending data to Splunk server
-02-14 16:24 root         INFO     Reply: <Response [200]>
-02-14 16:24 root         INFO     Setting interface to channel 11
-02-14 16:24 root         INFO     Sending data to Splunk server
-02-14 16:24 root         INFO     Reply: <Response [200]>
-02-14 16:24 root         INFO     Setting interface to channel 11
-02-14 16:24 root         INFO     Sending data to Splunk server
-02-14 16:24 root         INFO     Reply: <Response [200]>
-02-14 16:24 root         INFO     Setting interface to channel 6
-02-14 16:24 root         INFO     Sending data to Splunk server
-02-14 16:24 root         INFO     Reply: <Response [200]>
-02-14 16:24 root         INFO     Setting interface to channel 11
-02-14 16:24 root         INFO     Sending data to Splunk server
-02-14 16:24 root         INFO     Reply: <Response [200]>
-02-14 16:24 root         INFO     Sending data to Splunk server
-02-14 16:24 root         INFO     Reply: <Response [200]>
-02-14 16:24 root         INFO     Setting interface to channel 1
-02-14 16:24 root         INFO     Setting interface to channel 11
-02-14 16:24 root         INFO     Sending data to Splunk server
-02-14 16:24 root         INFO     Reply: <Response [200]>
-02-14 16:24 root         INFO     Sending data to Splunk server
-02-14 16:24 root         INFO     Reply: <Response [200]>
-02-14 16:24 root         INFO     Setting interface to channel 11
-02-14 16:24 root         INFO     Sending data to Splunk server
-02-14 16:24 root         INFO     Reply: <Response [200]>
-02-14 16:24 root         INFO     Setting interface to channel 6
-02-14 16:25 root         INFO     Sending data to Splunk server
-02-14 16:25 root         INFO     Reply: <Response [200]>
-02-14 16:25 root         INFO     Setting interface to channel 11
-02-14 16:25 root         INFO     Sending data to Splunk server
-02-14 16:25 root         INFO     Reply: <Response [200]>
-02-14 16:25 root         INFO     Setting interface to channel 1
-02-14 16:25 root         INFO     Setting interface to channel 11
-02-14 16:25 root         INFO     Sending data to Splunk server
-02-14 16:25 root         INFO     Reply: <Response [200]>
-02-14 16:25 root         INFO     Setting interface to channel 11
-02-14 16:25 root         INFO     Sending data to Splunk server
-02-14 16:25 root         INFO     Reply: <Response [200]>
-02-14 16:25 root         INFO     Setting interface to channel 6
-02-14 16:25 root         INFO     Sending data to Splunk server
-02-14 16:25 root         INFO     Reply: <Response [200]>
-02-14 16:25 root         INFO     Sending data to Splunk server
-02-14 16:25 root         INFO     Reply: <Response [200]>
-02-14 16:25 root         INFO     Setting interface to channel 11
-02-14 16:25 root         INFO     Sending data to Splunk server
-02-14 16:25 root         INFO     Reply: <Response [200]>
-02-14 16:25 root         INFO     Setting interface to channel 1
-02-14 16:25 root         INFO     Setting interface to channel 11
-02-14 16:25 root         INFO     Sending data to Splunk server
-02-14 16:25 root         INFO     Reply: <Response [200]>
-02-14 16:25 root         INFO     Setting interface to channel 11
-02-14 16:25 root         INFO     Sending data to Splunk server
-02-14 16:25 root         INFO     Reply: <Response [200]>
-02-14 16:25 root         INFO     Sending data to Splunk server
-02-14 16:25 root         INFO     Reply: <Response [200]>
-02-14 16:25 root         INFO     Setting interface to channel 6
-02-14 16:25 root         INFO     Sending data to Splunk server
-02-14 16:25 root         INFO     Reply: <Response [200]>
-02-14 16:25 root         INFO     Setting interface to channel 11
-02-14 16:25 root         INFO     Sending data to Splunk server
-02-14 16:25 root         INFO     Reply: <Response [200]>
-02-14 16:26 root         INFO     Setting interface to channel 1
-02-14 16:26 root         INFO     Sending data to Splunk server
-02-14 16:26 root         INFO     Reply: <Response [200]>
-02-14 16:26 root         INFO     Setting interface to channel 11
-02-14 16:26 root         INFO     Sending data to Splunk server
-02-14 16:26 root         INFO     Reply: <Response [200]>
-02-14 16:26 root         INFO     Setting interface to channel 11
-02-14 16:26 root         INFO     Sending data to Splunk server
-02-14 16:26 root         INFO     Reply: <Response [200]>
-02-14 16:26 root         INFO     Setting interface to channel 6
-02-14 16:26 root         INFO     Sending data to Splunk server
-02-14 16:26 root         INFO     Reply: <Response [200]>
-02-14 16:26 root         INFO     Setting interface to channel 11
-02-14 16:26 root         INFO     Sending data to Splunk server
-02-14 16:26 root         INFO     Reply: <Response [200]>
-02-14 16:26 root         INFO     Setting interface to channel 1
-02-14 16:26 root         INFO     Setting interface to channel 11
-02-14 16:26 root         INFO     Sending data to Splunk server
-02-14 16:26 root         INFO     Reply: <Response [200]>
-02-14 16:26 root         INFO     Sending data to Splunk server
-02-14 16:26 root         INFO     Reply: <Response [200]>
-02-14 16:26 root         INFO     Setting interface to channel 11
-02-14 16:26 root         INFO     Sending data to Splunk server
-02-14 16:26 root         INFO     Reply: <Response [200]>
-02-14 16:26 root         INFO     Setting interface to channel 6
-02-14 16:26 root         INFO     Sending data to Splunk server
-02-14 16:26 root         INFO     Reply: <Response [200]>
-02-14 16:26 root         INFO     Sending data to Splunk server
-02-14 16:26 root         INFO     Reply: <Response [200]>
-02-14 16:26 root         INFO     Setting interface to channel 11
-02-14 16:26 root         INFO     Sending data to Splunk server
-02-14 16:26 root         INFO     Reply: <Response [200]>
-02-14 16:26 root         INFO     Setting interface to channel 1
-02-14 16:26 root         INFO     Sending data to Splunk server
-02-14 16:26 root         INFO     Reply: <Response [200]>
-02-14 16:26 root         INFO     Setting interface to channel 11
-02-14 16:27 root         INFO     Sending data to Splunk server
-02-14 16:27 root         INFO     Reply: <Response [200]>
-02-14 16:27 root         INFO     Setting interface to channel 11
-02-14 16:27 root         INFO     Sending data to Splunk server
-02-14 16:27 root         INFO     Reply: <Response [200]>
-02-14 16:27 root         INFO     Setting interface to channel 6
-02-14 16:27 root         INFO     Sending data to Splunk server
-02-14 16:27 root         INFO     Reply: <Response [200]>
-02-14 16:27 root         INFO     Sending data to Splunk server
-02-14 16:27 root         INFO     Reply: <Response [200]>
-02-14 16:27 root         INFO     Setting interface to channel 11
+02-14 17:28 root         INFO     Shutting down interface wlan1
+02-14 17:28 root         INFO     Setting interface wlan1 to monitore mode
+02-14 17:28 root         INFO     Bringing up interface wlan1
+02-14 17:28 root         INFO     Scanning for 10 seconds to get all WLANs on channels [1, 6, 11, 36, 40, 44, 48]
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:28 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json
+02-14 17:29 root         INFO     Writing WLANs to wlans.json

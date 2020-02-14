@@ -15,6 +15,64 @@ logging.basicConfig(level=logging.DEBUG,
                     filemode='w')
 logging.getLogger("urllib3").setLevel(logging.WARNING)
 
+# PKT Filter
+def data(pkt):
+    global frameTypes
+    global scanWLANBSSIDs
+    global pkts
+    pktRetry = False
+    pktToDS = False
+    pktFromDS = False
+    pktBSSID = pkt[Dot11].addr3
+    # Get ToDS and FromDS flags if packet is of type data
+    # and read BSSID from a different address field
+    if pkt.type == 2:
+        pktToDS = pkt.FCfield & 0x4 != 0
+        pktFromDS = pkt.FCfield & 0x5 != 0
+        if pktToDS: pktBSSID = pkt[Dot11].addr1
+        if pktFromDS: pktBSSID = pkt[Dot11].addr2
+    # Check if BSSID is in one of the addres fields
+    # otherwise the frame is not interresting
+    if pktBSSID in scanWLANBSSIDs:
+        pktRetry = pkt[Dot11].FCfield.retry != 0
+        pktType = frameTypes[str(pkt.type)]['Name']
+        pktSubtype = frameTypes[str(pkt.type)][str(pkt.subtype)]
+        pktTime = time.time() #Epoch time for Splunk HEC
+
+        #pktChannel = int(ord(pkt[Dot11Elt:3].info))
+        pktChannel = pkt[RadioTap].Channel
+        if pktType == 0:
+            pktSSID = pkt[Dot11Elt].info
+            pktSSID = pktSSID.decode('UTF-8')
+        else:
+            pktSSID = 'NA'
+
+        pktInfo = {"time":pktTime, "event":{"type":pktType, "subtype":pktSubtype, "tods":pktToDS, "fromds":pktFromDS, "ssid":pktSSID, "bssid":pktBSSID, "channel":pktChannel, "retry":pktRetry}}
+        if len(pkts) <= int(splunkBulk):
+            pkts.append(pktInfo)
+        else:
+            sendThread = threading.Thread(target=sendData, args=(pkts, splunkServer, splunkPort, splunkURL, splunkToken))
+            sendThread.start()
+            pkts = []
+            pkts.append(pktInfo)
+
+
+def beacon(pkt):
+    if pkt.haslayer(Dot11Beacon):
+        ssid = pkt[Dot11Elt].info
+        bssid = pkt[Dot11].addr3
+        #channel = int(ord(pkt[Dot11Elt:3].info))
+        channel = pkt[RadioTap].Channel
+        #try:
+        #    extra = pkt[RadioTap].notdecoded
+        #    rssi = -(256-ord(extra[-4:-3]))
+        #except:
+        #    rssi = -100
+        #wlan = {'ssid':ssid.decode('UTF-8'), 'bssid':bssid, 'channel':channel, 'rssi':rssi}
+        wlan = {'ssid':ssid.decode('UTF-8'), 'bssid':bssid, 'channel':str(channel)}
+        createWlanList(wlan)
+
+
 def readConfig(configFile):
     with open(configFile, 'r') as cf:
         configDict = json.load(cf)
@@ -35,7 +93,8 @@ def sendData(pkts, splunkServer, splunkPort, splunkURL, splunkToken):
     req = requests.post(url, headers=authHeader, json=pkts, verify=False)
     logging.info('Reply: %s'%req)
 
-def createWlanList(wlan, wlans):
+def createWlanList(wlan):
+    wlans = readConfig('wlans.json')
     frequencies = readConfig('frequencies.json')
     ssid = wlan['ssid']
     bssid = wlan['bssid']
@@ -58,6 +117,14 @@ def createWlanList(wlan, wlans):
         valueList = []
         valueList.append(wlanValue)
         wlans[ssid] = valueList
+
+    writeWlanList('wlans.json', wlans)
+
+def readWlanList():
+    with open(wlansFile, 'r') as wf:
+        wlans = json.loads(wf)
+    wf.close()
+    return wlans
 
 def writeWlanList(wlansFile, wlans):
     f = open(wlansFile, 'w')
