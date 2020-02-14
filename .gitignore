@@ -1,4 +1,6 @@
 env/
+__pycache__/
 config.json
 wlans.json
 test.py
+app.log
