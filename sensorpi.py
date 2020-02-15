@@ -10,6 +10,8 @@ from scapy.all import *
 import threading
 from spmodule import *
 import urllib3
+
+# Disable certificate warnings
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 # Variables
