@@ -7,7 +7,7 @@ from scapy.all import *
 from splib import *
 
 # Load Configuration
-configFile = 'config.json'
+configFile = gv.configFile
 sensorPiConfig = readConfig(configFile)
 
 # SensorPi
