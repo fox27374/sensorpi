@@ -53,7 +53,7 @@ def sendData(pkts, splunkServer, splunkPort, splunkURL, splunkToken):
     logging.info('Reply: %s'%req)
 
 def createWlanList(wlan):
-    wlans = readConfig('wlans.json')
+    wlans = readConfig(gv.wlansFile)
     frequencies = readConfig('frequencies.json')
     ssid = wlan['ssid']
     bssid = wlan['bssid']
@@ -77,7 +77,7 @@ def createWlanList(wlan):
         valueList.append(wlanValue)
         wlans[ssid] = valueList
 
-    writeWlanList('wlans.json', wlans)
+    writeWlanList(gv.wlansFile, wlans)
 
 def readWlanList():
     with open(wlansFile, 'r') as wf:
