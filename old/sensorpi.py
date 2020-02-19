@@ -8,7 +8,7 @@ import signal
 import globalVars as gv
 from scapy.all import *
 import threading
-from spmodule import *
+from splib import *
 import urllib3
 
 # Disable certificate warnings

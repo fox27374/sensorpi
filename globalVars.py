@@ -1,16 +1,22 @@
 #!/usr/bin/env python
 
+import json
+
 # Variables to share beween modules
 
-from spmodule import readConfig
+def readConfig(configFile):
+    with open(configFile, 'r') as cf:
+        configDict = json.load(cf)
+    return configDict
 
 # Global variables
 pkts = []
 scanWLANBSSIDs = []
+scanWLANChannels = []
 
 # Load Configuration
-configFile = 'config.json'
-frameTypesFile = 'frametypes.json'
+configFile = 'config/config.json'
+frameTypesFile = 'config/frametypes.json'
 
 sensorPiConfig = readConfig(configFile)
 frameTypes = readConfig(frameTypesFile)
@@ -22,6 +28,7 @@ scanTime = sensorPiConfig['SensorPi']['Scantime']
 channelTime = sensorPiConfig['SensorPi']['Channeltime']
 wlansFile = sensorPiConfig['SensorPi']['wlansFile']
 frameTypesFile = sensorPiConfig['SensorPi']['frameTypesFile']
+logFile = sensorPiConfig['SensorPi']['logFile']
 
 # Splunk
 splunkServer = sensorPiConfig['Splunk']['Server']

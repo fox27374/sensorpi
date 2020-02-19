@@ -12,48 +12,9 @@ import logging
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
                     datefmt='%m-%d %H:%M',
-                    filename='app.log',
-                    filemode='w')
+                    filename=gv.logFile,
+                    filemode='a')
 logging.getLogger("urllib3").setLevel(logging.WARNING)
-
-# PKT Filter
-def data(pkt):
-    pktRetry = False
-    pktToDS = False
-    pktFromDS = False
-    pktBSSID = pkt[Dot11].addr3
-    # Get ToDS and FromDS flags if packet is of type data
-    # and read BSSID from a different address field
-    if pkt.type == 2:
-        pktToDS = pkt.FCfield & 0x4 != 0
-        pktFromDS = pkt.FCfield & 0x5 != 0
-        if pktToDS: pktBSSID = pkt[Dot11].addr1
-        if pktFromDS: pktBSSID = pkt[Dot11].addr2
-    # Check if BSSID is in one of the addres fields
-    # otherwise the frame is not interresting
-    if pktBSSID in gv.scanWLANBSSIDs:
-        pktRetry = pkt[Dot11].FCfield.retry != 0
-        pktType = gv.frameTypes[str(pkt.type)]['Name']
-        pktSubtype = gv.frameTypes[str(pkt.type)][str(pkt.subtype)]
-        pktTime = time.time() #Epoch time for Splunk HEC
-
-        #pktChannel = int(ord(pkt[Dot11Elt:3].info))
-        pktChannel = pkt[RadioTap].Channel
-        if pktType == 0:
-            pktSSID = pkt[Dot11Elt].info
-            pktSSID = pktSSID.decode('UTF-8')
-        else:
-            pktSSID = 'NA'
-
-        pktInfo = {"time":pktTime, "event":{"type":pktType, "subtype":pktSubtype, "tods":pktToDS, "fromds":pktFromDS, "ssid":pktSSID, "bssid":pktBSSID, "channel":pktChannel, "retry":pktRetry}}
-        if len(gv.pkts) <= int(gv.splunkBulk):
-            gv.pkts.append(pktInfo)
-        else:
-            sendThread = threading.Thread(target=sendData, args=(gv.pkts, gv.splunkServer, gv.splunkPort, gv.splunkURL, gv.splunkToken))
-            sendThread.start()
-            gv.pkts = []
-            gv.pkts.append(pktInfo)
-
 
 def beacon(pkt):
     if pkt.haslayer(Dot11Beacon):

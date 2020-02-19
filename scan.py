@@ -4,7 +4,7 @@ import os
 import json
 import time
 from scapy.all import *
-from spmodule import *
+from splib import *
 
 # Load Configuration
 configFile = 'config.json'
