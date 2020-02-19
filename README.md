@@ -17,6 +17,20 @@ Use a RaspberryPi as a WLAN sensor and send 802.11 frame information in a struct
 * urllib3
 * requests
 
+### Installation
+After the git clone do the following:
+```
+cd sensorpi
+python -m venv env
+source env/bin/activate
+pip install scapy
+pip install requests
+mkdir log
+touch log/app.log
+cp config/config-template.json config/config.json
+Modify the config.json file to your needs
+```
+
 ## Files explained
 
 ### main.py
