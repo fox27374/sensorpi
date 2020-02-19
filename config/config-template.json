@@ -5,7 +5,8 @@
         "Scantime": "10",
         "Channeltime": "5",
 	"wlansFile": "wlans.json",
-	"frameTypesFile": "frametypes.json"
+	"frameTypesFile": "frametypes.json",
+	"logFile": "log/app.log"
     },
     "Splunk": {
         "Server":"10.10.10.10",
