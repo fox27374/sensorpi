@@ -23,8 +23,7 @@ After the git clone do the following:
 cd sensorpi
 python -m venv env
 source env/bin/activate
-pip install scapy
-pip install requests
+pip install scapy requests
 mkdir log
 touch log/app.log
 cp config/config-template.json config/config.json
