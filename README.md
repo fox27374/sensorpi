@@ -40,7 +40,7 @@ The main process that starts the different subprocesses.
 Scans the air on channels specified in config.json. The scantime is also set in this file. After the scan is complete, a JSON file is created that lists all wlans and the associated BSSIDs. This file is later used as a database for the continouse sniffing
 
 ### sensor.py
-Is started by the main process. The only parameter that the script needs is the SSID. Based on this, channels and BSSIDs are read from the wlans.json file created by the scan.py script. It scans the air, extracts information from pakets and creates a JSON structure that is then send to the Splunk serveri.
+Is started by the main process. The only parameter that the script needs is the SSID. Based on this, channels and BSSIDs are read from the wlans.json file created by the scan.py script. It scans the air, extracts information from pakets and creates a JSON structure that is then send to the Splunk server.
 
 ### splib.py
 A library file with a some routines that are used by the other scripts
