@@ -50,3 +50,13 @@ This file contains the translations for the different frame types and subtypes. 
 ### frequencies.json
 A frequency conversation file ti channels and the other way round
 
+## ToDo
+* Create webgui for configuration (maybe flask)
+* Create clean overview of the running processes and the option to kill / restart them
+* Start subprocesses from the main process in a nice and tidy way
+* Implement error handling
+* Implement logging
+* Improve performance (maybe threading)
+* Extract http forwarder process from sensor
+* Implement in memory communication between sensor and http forwarder
+
