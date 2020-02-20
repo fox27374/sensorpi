@@ -54,7 +54,7 @@ def sendData(pkts, splunkServer, splunkPort, splunkURL, splunkToken):
 
 def createWlanList(wlan):
     wlans = readConfig(gv.wlansFile)
-    frequencies = readConfig('frequencies.json')
+    frequencies = readConfig('config/frequencies.json')
     ssid = wlan['ssid']
     bssid = wlan['bssid']
     channel = frequencies['fre2cha'][wlan['channel']]
