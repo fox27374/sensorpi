@@ -29,6 +29,9 @@ Modify the config.json file to your needs
 ### main.py
 The main process that starts the different subprocesses.
 
+### setup.py
+The setup routine for initialising the environment. It installs pip modules and creates some folders and files
+
 ### scan.py
 Scans the air on channels specified in config.json. The scantime is also set in this file. After the scan is complete, a JSON file is created that lists all wlans and the associated BSSIDs. This file is later used as a database for the continouse sniffing
 
