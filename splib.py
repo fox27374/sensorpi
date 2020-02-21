@@ -58,10 +58,9 @@ def changeIfaceMode(iface):
 
 def sendData(pkts):
     url = 'https://' + gv.splunkServer + ':' + gv.splunkPort + gv.splunkURL
-    mqttLog('URL: %s' %url)
     authHeader = {'Authorization': 'Splunk %s' %gv.splunkToken}
     req = requests.post(url, headers=authHeader, json=pkts, verify=False)
-    mqttLog('Sending data to Splunk server: ' %req)
+    mqttLog('Sending data to Splunk server: %s' %req)
 
 def createWlanList(wlan):
     wlans = readConfig(gv.wlansFile)

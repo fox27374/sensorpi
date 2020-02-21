@@ -21,7 +21,7 @@ scanWLAN = 'Aironet-NTS-Secure'
 # Read WLANs from file
 wlans = readConfig(gv.wlansFile)
 
-# Start Logging
+# Start Logger
 procLogger = sp.Popen(['python', scriptLogger])
 mqttLog('Starting logger subprocess with PID: %s' %procLogger.pid)
 
