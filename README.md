@@ -13,6 +13,7 @@ Use a RaspberryPi as a WLAN sensor and send 802.11 frame information in a struct
 * Python 3
 * python-pip
 * virtualenv
+* MQTT (localhost)
 
 ### Installation
 After the git clone do the following:
@@ -55,8 +56,5 @@ A frequency conversation file ti channels and the other way round
 * Create clean overview of the running processes and the option to kill / restart them
 * Start subprocesses from the main process in a nice and tidy way
 * Implement error handling
-* Implement logging
 * Improve performance (maybe threading)
-* Extract http forwarder process from sensor
-* Implement in memory communication between sensor and http forwarder
 
