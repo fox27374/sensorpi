@@ -7,7 +7,7 @@ from splib import *
 import subprocess as sp
 
 
-scriptScan = 'scan.py'
+scriptScan = 'scanner.py'
 scriptSensor = 'sensor.py'
 scriptLogger = 'logger.py'
 scriptForwarder = 'forwarder.py'
