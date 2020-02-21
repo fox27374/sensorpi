@@ -1,31 +1,22 @@
 #!/usr/bin/env python
 
 import os
-import json
 import time
-from scapy.all import *
-from splib import *
-
-# Load Configuration
-configFile = gv.configFile
-sensorPiConfig = readConfig(configFile)
-
-# SensorPi
-iface = sensorPiConfig['SensorPi']['Interface']
-#channels = sensorPiConfig['SensorPi']['Channels']
-scanTime = sensorPiConfig['SensorPi']['Scantime']
-wlansFile = sensorPiConfig['SensorPi']['wlansFile']
+import globalVars as gv
+from scapy.all import sniff
+from splib import beacon, changeIfaceMode, mqttLog
 
 # Variables
 channels= [1,6,11,36,40,44,48]
 
 # System preparation
-changeIfaceMode(iface)            
-            
-logging.info('Scanning for %s seconds to get all WLANs on channels %s'%(scanTime, channels))
-loopTime = time.time() + int(scanTime)
+changeIfaceMode(gv.iface)
+
+mqttLog('Scanning for %s seconds to get all WLANs on channels %s' %(gv.scanTime, channels))
+#logging.info('Scanning for %s seconds to get all WLANs on channels %s'%(gv.scanTime, channels))
+loopTime = time.time() + int(gv.scanTime)
 while time.time() < loopTime:
     for channel in channels:
-        os.system("iwconfig " + iface + " channel " + str(channel))
-        sniff(iface=iface, prn=beacon, count=10, timeout=1, store=0)
+        os.system("iwconfig " + gv.iface + " channel " + str(channel))
+        sniff(iface=gv.iface, prn=beacon, count=10, timeout=1, store=0)
 

@@ -1,14 +1,16 @@
 #!/usr/bin/env python
 
 import time
-import requests
 import globalVars as gv
 from scapy.all import sniff
 from splib import *
-import urllib3
+import paho.mqtt.client as mqtt
 
-# Disable certificate warnings
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+def mqttSend(data):
+    brokerAddress="localhost"
+    client = mqtt.Client('sensor')
+    client.connect(brokerAddress)
+    client.publish("sensorpi/sensordata", data)
 
 # Read Channels and BSSIDs from file
 # Filter by SSID that is passed from the main process
@@ -38,7 +40,7 @@ def data(pkt):
         if pktFromDS: pktBSSID = pkt[Dot11].addr2
     # Check if BSSID is in one of the addres fields
     # otherwise the frame is not interresting
-    if pktBSSID in gv.scanWLANBSSIDs:
+    if pktBSSID in scanWLANBSSIDs:
         pktRetry = pkt[Dot11].FCfield.retry != 0
         pktType = gv.frameTypes[str(pkt.type)]['Name']
         pktSubtype = gv.frameTypes[str(pkt.type)][str(pkt.subtype)]
@@ -53,24 +55,19 @@ def data(pkt):
             pktSSID = 'NA'
 
         pktInfo = {"time":pktTime, "event":{"type":pktType, "subtype":pktSubtype, "tods":pktToDS, "fromds":pktFromDS, "ssid":pktSSID, "bssid":pktBSSID, "channel":pktChannel, "retry":pktRetry}}
-        if len(gv.pkts) <= int(gv.splunkBulk):
-            gv.pkts.append(pktInfo)
-        else:
-            sendThread = threading.Thread(target=sendData, args=(gv.pkts, gv.splunkServer, gv.splunkPort, gv.splunkURL, gv.splunkToken))
-            sendThread.start()
-            gv.pkts = []
-            gv.pkts.append(pktInfo)
+        mqttSend(json.dumps(pktInfo))
 
 # Logging some info
-logging.info('Starting sensor for SSID: %s' %scanWLANSSID)
-logging.info('Channels for this SSID: %s' %scanWLANChannels)
-logging.info('BSSIDs for this SSID: %s' %scanWLANBSSIDs)
-logging.info('Changing channel every %s seconds' %gv.channelTime)
+mqttLog('Starting sensor for SSID: %s' %scanWLANSSID)
+mqttLog('Starting sensor for SSID: %s' %scanWLANSSID)
+mqttLog('Channels for this SSID: %s' %scanWLANChannels)
+mqttLog('BSSIDs for this SSID: %s' %scanWLANBSSIDs)
+mqttLog('Changing channel every %s seconds' %gv.channelTime)
 
 # Start sniffing loop
 while True:
     for scanWLANChannel in scanWLANChannels:
-        logging.info('Setting interface to channel %s'%scanWLANChannel)
+        mqttLog('Setting interface to channel %s'%scanWLANChannel)
         os.system("iwconfig " + gv.iface + " channel " + str(scanWLANChannel))
         loopTime = time.time() + int(gv.channelTime)
         while time.time() < loopTime:

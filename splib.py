@@ -7,6 +7,8 @@ import requests
 import globalVars as gv
 from scapy.all import *
 import logging
+import urllib3
+import paho.mqtt.client as mqtt
 
 # set up logging
 logging.basicConfig(level=logging.DEBUG,
@@ -15,6 +17,9 @@ logging.basicConfig(level=logging.DEBUG,
                     filename=gv.logFile,
                     filemode='a')
 logging.getLogger("urllib3").setLevel(logging.WARNING)
+
+# Disable certificate warnings
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 def beacon(pkt):
     if pkt.haslayer(Dot11Beacon):
@@ -31,6 +36,12 @@ def beacon(pkt):
         wlan = {'ssid':ssid.decode('UTF-8'), 'bssid':bssid, 'channel':str(channel)}
         createWlanList(wlan)
 
+def mqttLog(data):
+    brokerAddress="localhost"
+    client = mqtt.Client('logger')
+    client.connect(brokerAddress)
+    client.publish("sensorpi/log", data)
+
 
 def readConfig(configFile):
     with open(configFile, 'r') as cf:
@@ -39,18 +50,18 @@ def readConfig(configFile):
 
 def changeIfaceMode(iface):
     os.system("ifconfig " + iface + " down")
-    logging.info('Shutting down interface %s'%iface)
+    mqttLog('Shutting down interface %s'%iface)
     os.system("iwconfig " + iface + " mode monitor")
-    logging.info('Setting interface %s to monitore mode'%iface)
+    mqttLog('Setting interface %s to monitore mode'%iface)
     os.system("ifconfig " + iface + " up")
-    logging.info('Bringing up interface %s'%iface)
+    mqttLog('Bringing up interface %s'%iface)
 
-def sendData(pkts, splunkServer, splunkPort, splunkURL, splunkToken):
-    url = 'https://' + splunkServer + ':' + splunkPort + splunkURL
-    authHeader = {'Authorization': 'Splunk %s'%splunkToken}
-    logging.info('Sending data to Splunk server')
+def sendData(pkts):
+    url = 'https://' + gv.splunkServer + ':' + gv.splunkPort + gv.splunkURL
+    mqttLog('URL: %s' %url)
+    authHeader = {'Authorization': 'Splunk %s' %gv.splunkToken}
     req = requests.post(url, headers=authHeader, json=pkts, verify=False)
-    logging.info('Reply: %s'%req)
+    mqttLog('Sending data to Splunk server: ' %req)
 
 def createWlanList(wlan):
     wlans = readConfig(gv.wlansFile)
@@ -89,5 +100,6 @@ def writeWlanList(wlansFile, wlans):
     f = open(wlansFile, 'w')
     f.write(json.dumps(wlans, indent=4))
     f.close()
-    logging.info('Writing WLANs to %s'%wlansFile)
+    mqttLog('Writing WLANs to %s' %wlansFile)
+    #mqttLog('Writing WLANs to %s'%wlansFile)
 
