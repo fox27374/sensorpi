@@ -29,6 +29,8 @@ channelTime = sensorPiConfig['SensorPi']['Channeltime']
 wlansFile = sensorPiConfig['SensorPi']['wlansFile']
 frameTypesFile = sensorPiConfig['SensorPi']['frameTypesFile']
 logFile = sensorPiConfig['SensorPi']['logFile']
+mqttServer = sensorPiConfig['SensorPi']['mqttServer']
+mqttPort = sensorPiConfig['SensorPi']['mqttPort']
 
 # Splunk
 splunkServer = sensorPiConfig['Splunk']['Server']
