@@ -28,7 +28,7 @@ print('Checking / Installing required packages')
 for pkg in pipPkg:
     if not checkPipPkg(pkg):
         print('Installing package %s' %pkg)
-        installPipPkg(pkgi)
+        installPipPkg(pkg)
     else:
         print('Package %s installed already' %pkg)
 
