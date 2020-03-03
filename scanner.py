@@ -13,6 +13,7 @@ channels= [1,6,11,36,40,44,48]
 changeIfaceMode(gv.iface)
 
 mqttLog('Scanning for %s seconds to get all WLANs on channels %s' %(gv.scanTime, channels))
+mqttLog('Ignoring WLANs with a RSSI beneath -%sdBm' %(gv.rssiThreshold))
 #logging.info('Scanning for %s seconds to get all WLANs on channels %s'%(gv.scanTime, channels))
 loopTime = time.time() + int(gv.scanTime)
 while time.time() < loopTime:

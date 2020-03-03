@@ -28,17 +28,17 @@ def beacon(pkt):
         #channel = int(ord(pkt[Dot11Elt:3].info))
         channel = pkt[RadioTap].Channel
         try:
-            rssi = pkt.dBm_AntSignal
-        #    extra = pkt[RadioTap].notdecoded
-        #    rssi = -(256-ord(extra[-4:-3]))
+            # convert RSSI to positive value
+            rssi = abs(pkt.dBm_AntSignal)
         except:
-            rssi = -100
-        wlan = {'ssid':ssid.decode('UTF-8'), 'bssid':bssid, 'channel':str(channel), 'rssi':rssi}
-        #wlan = {'ssid':ssid.decode('UTF-8'), 'bssid':bssid, 'channel':str(channel)}
-        createWlanList(wlan)
+            rssi = 100
+
+        if rssi <= int(gv.rssiThreshold):
+            wlan = {'ssid':ssid.decode('UTF-8'), 'bssid':bssid, 'channel':str(channel), 'rssi':rssi}
+            createWlanList(wlan)
 
 def mqttLog(data):
-    brokerAddress="localhost"
+    brokerAddress = gv.mqttServer
     client = mqtt.Client('logger')
     client.connect(brokerAddress)
     client.publish("sensorpi/log", data)
@@ -70,8 +70,7 @@ def createWlanList(wlan):
     bssid = wlan['bssid']
     channel = frequencies['fre2cha'][wlan['channel']]
     rssi = wlan['rssi']
-    wlanValue = {'bssid':bssid, 'channel':wlan['channel'], 'rssi':rssi}
-    #wlanValue = {'bssid':bssid, 'channel':channel}
+    wlanValue = {'bssid':bssid, 'channel':channel, 'rssi':rssi}
     addValue = True
     
     # Append values if SSID exists (no duplicates)

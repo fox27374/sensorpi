@@ -31,13 +31,18 @@ def data(pkt):
     pktToDS = False
     pktFromDS = False
     pktBSSID = pkt[Dot11].addr3
+    pktClient = pkt[Dot11].addr1
     # Get ToDS and FromDS flags if packet is of type data
     # and read BSSID from a different address field
     if pkt.type == 2:
         pktToDS = pkt.FCfield & 0x4 != 0
         pktFromDS = pkt.FCfield & 0x5 != 0
-        if pktToDS: pktBSSID = pkt[Dot11].addr1
-        if pktFromDS: pktBSSID = pkt[Dot11].addr2
+        if pktToDS and not pktFromDS:
+            pktBSSID = pkt[Dot11].addr1
+            pktClient = pkt[Dot11].addr2
+        if pktFromDS and not pktToDS:
+            pktBSSID = pkt[Dot11].addr2
+            pktClient = pkt[Dot11].addr1
     # Check if BSSID is in one of the addres fields
     # otherwise the frame is not interresting
     if pktBSSID in scanWLANBSSIDs:
@@ -48,13 +53,13 @@ def data(pkt):
 
         #pktChannel = int(ord(pkt[Dot11Elt:3].info))
         pktChannel = pkt[RadioTap].Channel
-        if pktType == 0:
+        if pktType == 'Management':
             pktSSID = pkt[Dot11Elt].info
             pktSSID = pktSSID.decode('UTF-8')
         else:
             pktSSID = 'NA'
 
-        pktInfo = {"time":pktTime, "event":{"type":pktType, "subtype":pktSubtype, "tods":pktToDS, "fromds":pktFromDS, "ssid":pktSSID, "bssid":pktBSSID, "channel":pktChannel, "retry":pktRetry}}
+        pktInfo = {"time":pktTime, "event":{"type":pktType, "subtype":pktSubtype, "tods":pktToDS, "fromds":pktFromDS, "ssid":pktSSID, "bssid":pktBSSID, "client":pktClient, "channel":pktChannel, "retry":pktRetry}}
         mqttSend(json.dumps(pktInfo))
 
 # Logging some info
