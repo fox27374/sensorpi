@@ -7,7 +7,7 @@ from splib import *
 import paho.mqtt.client as mqtt
 
 def mqttSend(data):
-    brokerAddress="localhost"
+    brokerAddress=gv.mqttServer
     client = mqtt.Client('sensor')
     client.connect(brokerAddress)
     client.publish("sensorpi/sensordata", data)

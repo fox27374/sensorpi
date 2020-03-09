@@ -8,7 +8,7 @@ import subprocess as sp
 
 
 scriptScan = 'scanner.py'
-scriptSensor = 'sensor.py'
+scriptSensor = 'sensor2.py'
 scriptLogger = 'logger.py'
 scriptForwarder = 'forwarder.py'
 
