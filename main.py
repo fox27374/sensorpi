@@ -2,13 +2,13 @@
 
 import signal
 import globalVars as gv
-from scapy.all import *
+#from scapy.all import *
 from splib import *
 import subprocess as sp
 
 
 scriptScan = 'scanner.py'
-scriptSensor = 'sensor2.py'
+scriptSensor = 'sensor.py'
 scriptLogger = 'logger.py'
 scriptForwarder = 'forwarder.py'
 

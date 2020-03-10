@@ -1,21 +1,16 @@
 #!/usr/bin/env python
 
-import time
+import subprocess as sp
+import json
 import globalVars as gv
-from scapy.all import sniff
 from splib import *
 import paho.mqtt.client as mqtt
 
-def mqttSend(data):
-    brokerAddress=gv.mqttServer
-    client = mqtt.Client('sensor')
-    client.connect(brokerAddress)
-    client.publish("sensorpi/sensordata", data)
 
 # Read Channels and BSSIDs from file
 # Filter by SSID that is passed from the main process
-wlans = readConfig('wlans.json')
 scanWLANSSID = str(sys.argv[1])
+wlans = readConfig('wlans.json')
 scanWLANChannels = []
 scanWLANBSSIDs = []
 for wlanInfo in wlans[scanWLANSSID]:
@@ -25,55 +20,56 @@ for wlanInfo in wlans[scanWLANSSID]:
 # Remove duplicates
 scanWLANChannels = list(dict.fromkeys(scanWLANChannels))
 
-# PKT Filter
-def data(pkt):
-    pktRetry = False
-    pktToDS = False
-    pktFromDS = False
-    pktBSSID = pkt[Dot11].addr3
-    pktClient = pkt[Dot11].addr1
-    # Get ToDS and FromDS flags if packet is of type data
-    # and read BSSID from a different address field
-    if pkt.type == 2:
-        pktToDS = pkt.FCfield & 0x4 != 0
-        pktFromDS = pkt.FCfield & 0x5 != 0
-        if pktToDS and not pktFromDS:
-            pktBSSID = pkt[Dot11].addr1
-            pktClient = pkt[Dot11].addr2
-        if pktFromDS and not pktToDS:
-            pktBSSID = pkt[Dot11].addr2
-            pktClient = pkt[Dot11].addr1
-    # Check if BSSID is in one of the addres fields
-    # otherwise the frame is not interresting
-    if pktBSSID in scanWLANBSSIDs:
-        pktRetry = pkt[Dot11].FCfield.retry != 0
-        pktType = gv.frameTypes[str(pkt.type)]['Name']
-        pktSubtype = gv.frameTypes[str(pkt.type)][str(pkt.subtype)]
-        pktTime = time.time() #Epoch time for Splunk HEC
+def mqttSend(data):
+    brokerAddress=gv.mqttServer
+    client = mqtt.Client('sensor')
+    client.connect(brokerAddress)
+    client.publish("sensorpi/sensordata", data)
 
-        #pktChannel = int(ord(pkt[Dot11Elt:3].info))
-        pktChannel = pkt[RadioTap].Channel
-        if pktType == 'Management':
-            pktSSID = pkt[Dot11Elt].info
-            pktSSID = pktSSID.decode('UTF-8')
-        else:
-            pktSSID = 'NA'
 
-        pktInfo = {"time":pktTime, "event":{"type":pktType, "subtype":pktSubtype, "tods":pktToDS, "fromds":pktFromDS, "ssid":pktSSID, "bssid":pktBSSID, "client":pktClient, "channel":pktChannel, "retry":pktRetry}}
-        mqttSend(json.dumps(pktInfo))
+def sensor(cmd):
+    procSensor = sp.Popen(cmd, stdout=sp.PIPE)
+    mqttLog('Starting TShark subprocess with PID: %s' %procSensor.pid)
+    while True:
+        output = procSensor.stdout.readline()
+        if output == '' and procSensor.poll() is not None:
+            break
+        if output:
+            printOutput = output.strip().decode()
+            # Filter pkt header line that is send by TShark
+            if 'index' not in printOutput:
+                pktRaw = json.loads(output.strip())
+                pktTime = pktRaw['timestamp']
+                pktTypeRaw = pktRaw['layers']['wlan_fc_type'][0]
+                pktType = gv.frameTypes[pktTypeRaw]['Name']
+                pktSubtypeRaw = pktRaw['layers']['wlan_fc_subtype'][0]
+                pktSubtype = gv.frameTypes[pktTypeRaw][pktSubtypeRaw]
+                pktSSID = pktBSSID = pktSA = pktDA = pktTA = pktRA = 'NA'
+                pktRetry = 'False'
+                if 'wlan_ssid' in pktRaw['layers'].keys(): pktSSID = pktRaw['layers']['wlan_ssid'][0]
+                if 'wlan_bssid' in pktRaw['layers'].keys(): pktBSSID = pktRaw['layers']['wlan_bssid'][0]
+                if 'wlan_sa' in pktRaw['layers'].keys(): pktSA = pktRaw['layers']['wlan_sa'][0]
+                if 'wlan_da' in pktRaw['layers'].keys(): pktDA = pktRaw['layers']['wlan_da'][0]
+                if 'wlan_ta' in pktRaw['layers'].keys(): pktTA = pktRaw['layers']['wlan_ta'][0]
+                if 'wlan_ra' in pktRaw['layers'].keys(): pktRA = pktRaw['layers']['wlan_ra'][0]
+                if pktRaw['layers']['wlan_fc_retry'][0] == '1': pktRetry = 'True'
+                pktChannel = pktRaw['layers']['wlan_radio_channel'][0]
+                pktInfo = {"time":pktTime, "event":{"Type":pktType, "Subtype":pktSubtype, "SSID":pktSSID, "BSSID":pktBSSID, "SA":pktSA, "DA":pktDA, "TA":pktTA, "RA":pktRA, "Channel":pktChannel, "Retry":pktRetry}}            
+                mqttSend(json.dumps(pktInfo))
+
+cmdFilter = ['-Y', 'wlan.ta==' + scanWLANBSSIDs[0] + ' or wlan.ra==' + scanWLANBSSIDs[0] + ' or wlan.sa==' + scanWLANBSSIDs[0]]
+cmd = 'tshark -i ' + gv.iface + ' -l -e wlan.fc.retry -e wlan.fc.type -e wlan.fc.subtype -e wlan.bssid -e wlan.ssid -e wlan.sa -e wlan.da -e wlan.ta -e wlan.ra -e wlan_radio.channel -s 100 -T ek'
+cmd = cmd.split(' ')
+cmd += cmdFilter
 
 # Logging some info
-mqttLog('Starting sensor for SSID: %s' %scanWLANSSID)
 mqttLog('Starting sensor for SSID: %s' %scanWLANSSID)
 mqttLog('Channels for this SSID: %s' %scanWLANChannels)
 mqttLog('BSSIDs for this SSID: %s' %scanWLANBSSIDs)
 mqttLog('Changing channel every %s seconds' %gv.channelTime)
+mqttLog('TShark filter: %s' %cmdFilter)
 
-# Start sniffing loop
-while True:
-    for scanWLANChannel in scanWLANChannels:
-        mqttLog('Setting interface to channel %s'%scanWLANChannel)
-        os.system("iwconfig " + gv.iface + " channel " + str(scanWLANChannel))
-        loopTime = time.time() + int(gv.channelTime)
-        while time.time() < loopTime:
-            sniff(iface=gv.iface, prn=data, count=10, timeout=3, store=0)
+# Start sensor loop
+sensor(cmd)
+
+
