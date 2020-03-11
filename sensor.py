@@ -53,15 +53,17 @@ def sensor(cmd):
                 if 'wlan_ta' in pktRaw['layers'].keys(): pktTA = pktRaw['layers']['wlan_ta'][0]
                 if 'wlan_ra' in pktRaw['layers'].keys(): pktRA = pktRaw['layers']['wlan_ra'][0]
                 if pktRaw['layers']['wlan_fc_retry'][0] == '1': pktRetry = 'True'
+                pktDuration = 0
+                if 'wlan_radio_duration' in pktRaw['layers'].keys():
+                    pktDuration = int(pktRaw['layers']['wlan_radio_duration'][0]) + int(pktRaw['layers']['wlan_radio_preamble'][0])
                 pktChannel = pktRaw['layers']['wlan_radio_channel'][0]
-                pktDuration = int(pktRaw['layers']['wlan_radio_duration'][0]) + int(pktRaw['layers']['wlan_radio_preamble'][0])
                 pktInfo = {"time":pktTime, "event":{"Type":pktType, "Subtype":pktSubtype, "SSID":pktSSID, "BSSID":pktBSSID, "SA":pktSA, "DA":pktDA, "TA":pktTA, "RA":pktRA, "Duration":pktDuration, "Channel":pktChannel, "Retry":pktRetry}}            
                 mqttSend(json.dumps(pktInfo))
 
 cmdFilter = ['-Y', 'wlan.ta==' + scanWLANBSSIDs[0] + ' or wlan.ra==' + scanWLANBSSIDs[0] + ' or wlan.sa==' + scanWLANBSSIDs[0]]
 cmd = 'tshark -i ' + gv.iface + ' -l -e wlan.fc.retry -e wlan.fc.type -e wlan.fc.subtype -e wlan.bssid -e wlan.ssid -e wlan.sa -e wlan.da -e wlan.ta -e wlan.ra -e wlan_radio.duration -e wlan_radio.preamble -e wlan_radio.channel -s 100 -T ek'
 cmd = cmd.split(' ')
-cmd += cmdFilter
+#cmd += cmdFilter
 
 # Logging some info
 mqttLog('Starting sensor for SSID: %s' %scanWLANSSID)

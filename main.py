@@ -1,10 +1,9 @@
 #!/usr/bin/env python
 
 import signal
-import globalVars as gv
-#from scapy.all import *
-from splib import *
 import subprocess as sp
+import globalVars as gv
+from splib import *
 
 
 scriptScan = 'scanner.py'
@@ -45,14 +44,14 @@ try:
         procScanReturn = procScan.communicate()
 
 except KeyboardInterrupt:
-        mqttLog('Interrupt received, exiting')
+    mqttLog('Interrupt received, exiting')
 
 finally:
-        mqttLog('Stopping sensor subprocess with PID: %s' %procSensor.pid)
-        procSensor.terminate()
-        mqttLog('Stopping forwarder subprocess with PID: %s' %procForwarder.pid)
-        procForwarder.terminate()
-        mqttLog('Stopping logger subprocess with PID: %s' %procSensor.pid)
-        procLogger.terminate()
+    mqttLog('Stopping sensor subprocess with PID: %s' %procSensor.pid)
+    procSensor.terminate()
+    mqttLog('Stopping forwarder subprocess with PID: %s' %procForwarder.pid)
+    procForwarder.terminate()
+    mqttLog('Stopping logger subprocess with PID: %s' %procSensor.pid)
+    procLogger.terminate()
 
 
