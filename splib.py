@@ -37,12 +37,17 @@ def beacon(pkt):
             wlan = {'ssid':ssid.decode('UTF-8'), 'bssid':bssid, 'channel':str(channel), 'rssi':rssi}
             createWlanList(wlan)
 
-def mqttLog(data):
+def mqttLog(clientID, data):
     brokerAddress = gv.mqttServer
-    client = mqtt.Client('logger')
+    client = mqtt.Client(clientID)
     client.connect(brokerAddress)
     client.publish("sensorpi/log", data)
 
+def mqttSend(clientID, data):
+    brokerAddress=gv.mqttServer
+    client = mqtt.Client(clientID)
+    client.connect(brokerAddress)
+    client.publish("sensorpi/sensordata", data)
 
 def readConfig(configFile):
     with open(configFile, 'r') as cf:
@@ -51,11 +56,11 @@ def readConfig(configFile):
 
 def changeIfaceMode(iface):
     os.system("ifconfig " + iface + " down")
-    mqttLog('Shutting down interface %s'%iface)
+    mqttLog('System', 'Shuttinig down interface %s'%iface)
     os.system("iwconfig " + iface + " mode monitor")
-    mqttLog('Setting interface %s to monitore mode'%iface)
+    mqttLog('System', 'Setting interface %s to monitore mode'%iface)
     os.system("ifconfig " + iface + " up")
-    mqttLog('Bringing up interface %s'%iface)
+    mqttLog('System', 'Bringing up interface %s'%iface)
 
 def sendData(pkts):
     url = 'https://' + gv.splunkServer + ':' + gv.splunkPort + gv.splunkURL
@@ -68,9 +73,11 @@ def createWlanList(wlan):
     frequencies = readConfig('config/frequencies.json')
     ssid = wlan['ssid']
     bssid = wlan['bssid']
-    channel = frequencies['fre2cha'][wlan['channel']]
-    rssi = wlan['rssi']
-    wlanValue = {'bssid':bssid, 'channel':channel, 'rssi':rssi}
+    #channel = frequencies['fre2cha'][wlan['channel']]
+    channel = [wlan['channel']]
+    #rssi = wlan['rssi']
+    wlanValue = {'bssid':bssid, 'channel':channel}
+    #wlanValue = {'bssid':bssid, 'channel':channel, 'rssi':rssi}
     addValue = True
     
     # Append values if SSID exists (no duplicates)
