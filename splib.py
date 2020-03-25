@@ -55,11 +55,11 @@ def readConfig(configFile):
     return configDict
 
 def changeIfaceMode(iface):
-    os.system("ifconfig " + iface + " down")
+    os.system("sudo ifconfig " + iface + " down")
     mqttLog('System', 'Shuttinig down interface %s'%iface)
-    os.system("iwconfig " + iface + " mode monitor")
+    os.system("sudo iwconfig " + iface + " mode monitor")
     mqttLog('System', 'Setting interface %s to monitore mode'%iface)
-    os.system("ifconfig " + iface + " up")
+    os.system("sudo ifconfig " + iface + " up")
     mqttLog('System', 'Bringing up interface %s'%iface)
 
 def sendData(pkts):

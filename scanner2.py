@@ -26,7 +26,7 @@ try:
     mqttLog(clientID, 'Starting writer subprocess with PID: %s' %procWriter.pid)
     
     for channel in channels:
-        os.system("iwconfig " + gv.iface + " channel " + str(channel))
+        os.system("sudo iwconfig " + gv.iface + " channel " + str(channel))
         mqttLog(clientID, 'Changing interface channel to: %s' %channel)
         sleep(int(gv.scanTime))
 
