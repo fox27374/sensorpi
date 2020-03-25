@@ -1,3 +1,5 @@
+![Overview](https://github.com/fox27374/sensorpi/blob/master/overview.png)
+
 # SensorPi (still under development)
 ## Raspberry Pi WLAN sensor
 
