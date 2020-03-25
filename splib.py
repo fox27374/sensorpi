@@ -49,6 +49,13 @@ def mqttSend(clientID, data):
     client.connect(brokerAddress)
     client.publish("sensorpi/sensordata", data)
 
+def mqttCmd(clientID, module, cmd):
+    data = module + '#' + cmd
+    brokerAddress = gv.mqttServer
+    mqttClient = mqtt.Client(clientID)
+    mqttClient.connect(brokerAddress)
+    mqttClient.publish("sensorpi/command", data)
+
 def readConfig(configFile):
     with open(configFile, 'r') as cf:
         configDict = json.load(cf)

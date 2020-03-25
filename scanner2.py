@@ -4,13 +4,13 @@ import os
 from time import sleep
 import globalVars as gv
 import subprocess as sp
-from splib import changeIfaceMode, mqttLog
+from splib import changeIfaceMode, mqttLog, mqttCmd
 
 # Variables
 clientID = 'scanner'
 scriptScanner = 'tshark.py'
 scriptWriter = 'writer.py'
-channels= [1,6,11,36,40,44,48]
+channels= [1,6,11]
 #channels= [40,44,48,52,56]
 
 # System preparation
@@ -30,6 +30,8 @@ try:
         mqttLog(clientID, 'Changing interface channel to: %s' %channel)
         sleep(int(gv.scanTime))
 
+    mqttCmd(clientID, 'TShark', 'stop')
+    sleep(2)
     mqttLog(clientID, 'Stopping scanner subprocess with PID: %s' %procScanner.pid)
     procScanner.terminate()
     mqttLog(clientID, 'Stopping writer subprocess with PID: %s' %procWriter.pid)
