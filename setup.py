@@ -3,7 +3,7 @@
 import os
 import subprocess
 
-pipPkg = ['scapy', 'requests', 'paho-mqtt']
+pipPkg = ['requests', 'paho-mqtt']
 dirs = ['log']
 
 def installPipPkg(package):
